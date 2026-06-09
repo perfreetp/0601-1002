@@ -1,0 +1,89 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+}
+
+.header {
+  background: $color-bg-card;
+  padding: $spacing-lg $page-padding;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.typeTabs {
+  display: flex;
+  margin-bottom: $spacing-md;
+  background: $color-bg-page;
+  border-radius: $radius-button;
+  padding: 6rpx;
+  overflow-x: auto;
+}
+
+.typeTab {
+  flex: 1;
+  text-align: center;
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  font-weight: $font-weight-medium;
+  white-space: nowrap;
+  transition: all $transition-base;
+}
+
+.typeTabActive {
+  background: $color-primary-gradient;
+  color: $color-text-white;
+  box-shadow: 0 2rpx 8rpx rgba(255, 126, 103, 0.3);
+}
+
+.statsRow {
+  display: flex;
+  gap: $spacing-md;
+}
+
+.statCard {
+  flex: 1;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  padding: $spacing-sm $spacing-md;
+  text-align: center;
+}
+
+.statNum {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+}
+
+.statLabel {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.publishBtn {
+  @include button-reset;
+  position: fixed;
+  right: $page-padding;
+  bottom: calc(env(safe-area-inset-bottom) + 160rpx);
+  width: 112rpx;
+  height: 112rpx;
+  border-radius: $radius-round;
+  background: $color-primary-gradient;
+  color: $color-text-white;
+  font-size: 48rpx;
+  box-shadow: 0 8rpx 24rpx rgba(255, 126, 103, 0.4);
+  z-index: 100;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.92);
+  }
+}
+
+.list {
+  padding: $spacing-md $page-padding;
+}

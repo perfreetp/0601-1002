@@ -1,0 +1,135 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: #F5F5F5;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: calc(env(safe-area-inset-bottom) + 120rpx);
+}
+
+.messageList {
+  flex: 1;
+  padding: $spacing-md $page-padding;
+}
+
+.messageItem {
+  display: flex;
+  margin-bottom: $spacing-lg;
+  align-items: flex-start;
+}
+
+.messageMine {
+  flex-direction: row-reverse;
+}
+
+.msgAvatar {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: $radius-round;
+  flex-shrink: 0;
+}
+
+.msgBody {
+  max-width: 70%;
+  margin: 0 $spacing-md;
+}
+
+.msgName {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-bottom: 6rpx;
+}
+
+.msgContent {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $radius-lg;
+  font-size: $font-size-sm;
+  line-height: $line-height-normal;
+  word-break: break-word;
+}
+
+.msgOther {
+  background: $color-bg-card;
+  color: $color-text-primary;
+  border-top-left-radius: 4rpx;
+}
+
+.msgMine {
+  background: $color-primary;
+  color: $color-text-white;
+  border-top-right-radius: 4rpx;
+}
+
+.msgImage {
+  max-width: 400rpx;
+  max-height: 400rpx;
+  border-radius: $radius-md;
+  overflow: hidden;
+}
+
+.msgImageEl {
+  width: 100%;
+  height: 100%;
+}
+
+.msgLocation {
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-sm;
+  min-width: 300rpx;
+}
+
+.locationTitle {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+  margin-bottom: 4rpx;
+}
+
+.locationAddr {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.inputBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: $color-bg-card;
+  padding: $spacing-md $page-padding calc(env(safe-area-inset-bottom) + #{$spacing-md});
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  border-top: 1rpx solid $color-divider;
+}
+
+.iconBtn {
+  @include button-reset;
+  width: 64rpx;
+  height: 64rpx;
+  font-size: $font-size-xl;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.msgInput {
+  flex: 1;
+  height: 72rpx;
+  background: $color-bg-page;
+  border-radius: $radius-button;
+  padding: 0 $spacing-lg;
+  font-size: $font-size-sm;
+}
+
+.sendBtn {
+  @include button-reset;
+  height: 72rpx;
+  padding: 0 $spacing-xl;
+  background: $color-primary-gradient;
+  color: $color-text-white;
+  font-size: $font-size-sm;
+  border-radius: $radius-button;
+}

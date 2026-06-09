@@ -1,0 +1,58 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  min-height: 100vh;
+  background: $color-bg-page;
+}
+
+.categoryBar {
+  display: flex;
+  padding: $spacing-md $page-padding;
+  background: $color-bg-card;
+  gap: $spacing-md;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.categoryBtn {
+  @include button-reset;
+  flex: 1;
+  height: 72rpx;
+  border-radius: $radius-button;
+  background: $color-bg-page;
+  color: $color-text-secondary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  transition: all $transition-base;
+}
+
+.categoryBtnActive {
+  background: $color-primary-gradient;
+  color: $color-text-white;
+  box-shadow: 0 2rpx 8rpx rgba(255, 126, 103, 0.3);
+}
+
+.tabs {
+  display: flex;
+  padding: 0 $page-padding $spacing-md;
+  background: $color-bg-card;
+  gap: $spacing-lg;
+  border-bottom: 1rpx solid $color-divider;
+}
+
+.tab {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  padding-bottom: $spacing-sm 0;
+  position: relative;
+}
+
+.tabActive {
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+}
+
+.list {
+  padding: $spacing-md $page-padding;
+}
