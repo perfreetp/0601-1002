@@ -1,15 +1,29 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, Image } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import type { KnowledgeNote } from '@/types';
 import { getCategoryLabel } from '@/utils';
+import { useAppStore } from '@/store';
 
 interface KnowledgeCardProps {
   note: KnowledgeNote;
 }
 
 const KnowledgeCard: React.FC<KnowledgeCardProps> = ({ note }) => {
-  const [isCollected, setIsCollected] = useState(note.isCollected);
+  const toggleKnowledgeCollect = useAppStore(state => state.toggleKnowledgeCollect);
+  const currentNote = useAppStore(state =>
+    state.knowledgeNotes.find(n => n.id === note.id) || note
+  );
+
+  const handleCollect = (e) => {
+    e.stopPropagation();
+    toggleKnowledgeCollect(note.id);
+    Taro.showToast({
+      title: currentNote.isCollected ? '已取消收藏' : '收藏成功',
+      icon: 'success'
+    });
+  };
 
   return (
     <View className={styles.card}>
@@ -25,11 +39,8 @@ const KnowledgeCard: React.FC<KnowledgeCardProps> = ({ note }) => {
         </View>
         <View className={styles.footer}>
           <Text className={styles.meta}>{note.author} · {note.views}阅读</Text>
-          <Text
-            className={styles.collect}
-            onClick={() => setIsCollected(!isCollected)}
-          >
-            {isCollected ? '★ 已收藏' : '☆ 收藏'}
+          <Text className={styles.collect} onClick={handleCollect}>
+            {currentNote.isCollected ? '★ 已收藏' : '☆ 收藏'}
           </Text>
         </View>
       </View>

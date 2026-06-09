@@ -74,10 +74,21 @@
 }
 
 .msgLocation {
-  background: $color-bg-card;
   border-radius: $radius-md;
   padding: $spacing-sm;
   min-width: 300rpx;
+}
+
+.msgLocationOther {
+  background: $color-bg-card;
+  color: $color-text-primary;
+  border-top-left-radius: 4rpx;
+}
+
+.msgLocationMine {
+  background: $color-primary;
+  color: $color-text-white;
+  border-top-right-radius: 4rpx;
 }
 
 .locationTitle {

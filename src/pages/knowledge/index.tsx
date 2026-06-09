@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, Button, ScrollView } from '@tarojs/components';
 import styles from './index.module.scss';
 import KnowledgeCard from '@/components/KnowledgeCard';
-import { mockKnowledge } from '@/data/knowledge';
+import { useAppStore } from '@/store';
 import classnames from 'classnames';
 
 const categories = [
@@ -20,10 +20,11 @@ const tabs = [
 const KnowledgePage: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeTab, setActiveTab] = useState('recommend');
+  const knowledgeNotes = useAppStore(state => state.knowledgeNotes);
 
   let list = activeCategory === 'all'
-    ? mockKnowledge
-    : mockKnowledge.filter(k => k.category === activeCategory);
+    ? knowledgeNotes
+    : knowledgeNotes.filter(k => k.category === activeCategory);
 
   if (activeTab === 'collected') {
     list = list.filter(k => k.isCollected);
@@ -47,7 +48,7 @@ const KnowledgePage: React.FC = () => {
         {tabs.map(t => (
           <Text
             key={t.key}
-            className={classnames(styles.tab, activeTab === t.key && styles.tabActive}
+            className={classnames(styles.tab, activeTab === t.key && styles.tabActive)}
             onClick={() => setActiveTab(t.key)}
           >
             {t.label}
@@ -57,8 +58,11 @@ const KnowledgePage: React.FC = () => {
 
       <View className={styles.list}>
         {list.length === 0 ? (
-          <View style={{ padding: '100rpx 0, textAlign: 'center', color: '#86909C' }}>
-            暂无内容
+          <View className={styles.emptyState}>
+            <Text className={styles.emptyIcon}>📭</Text>
+            <Text className={styles.emptyText}>
+              {activeTab === 'collected' ? '暂无收藏内容' : '暂无相关内容'}
+            </Text>
           </View>
         ) : (
           list.map(note => (

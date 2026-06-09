@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { View, Text, Button, ScrollView } from '@tarojs/components';
-import Taro from '@tarojs/taro';
+import Taro, { useDidShow } from '@tarojs/taro';
 import styles from './index.module.scss';
 import HelpCard from '@/components/HelpCard';
-import { mockHelps } from '@/data/helps';
+import { useAppStore } from '@/store';
 import classnames from 'classnames';
 
 const types = [
@@ -16,10 +16,15 @@ const types = [
 
 const HelpPage: React.FC = () => {
   const [activeType, setActiveType] = useState('all');
+  const helpPosts = useAppStore(state => state.helpPosts);
 
   const filteredHelps = activeType === 'all'
-    ? mockHelps
-    : mockHelps.filter(h => h.type === activeType);
+    ? helpPosts
+    : helpPosts.filter(h => h.type === activeType);
+
+  useDidShow(() => {
+    console.log('[HelpPage] 页面显示，当前互助数:', helpPosts.length);
+  });
 
   const handlePublish = () => {
     Taro.navigateTo({ url: '/pages/publish-help/index' });
@@ -41,7 +46,7 @@ const HelpPage: React.FC = () => {
         </View>
         <View className={styles.statsRow}>
           <View className={styles.statCard}>
-            <View className={styles.statNum}>{mockHelps.length}</View>
+            <View className={styles.statNum}>{helpPosts.length}</View>
             <View className={styles.statLabel}>今日互助</View>
           </View>
           <View className={styles.statCard}>
@@ -56,9 +61,16 @@ const HelpPage: React.FC = () => {
       </View>
 
       <View className={styles.list}>
-        {filteredHelps.map(help => (
-          <HelpCard key={help.id} help={help} />
-        ))}
+        {filteredHelps.length === 0 ? (
+          <View style={{ padding: '120rpx 0', textAlign: 'center', color: '#86909C' }}>
+            <View style={{ fontSize: '100rpx', marginBottom: '24rpx' }}>📭</View>
+            <View>暂无相关互助信息</View>
+          </View>
+        ) : (
+          filteredHelps.map(help => (
+            <HelpCard key={help.id} help={help} />
+          ))
+        )}
       </View>
 
       <Button className={styles.publishBtn} onClick={handlePublish}>

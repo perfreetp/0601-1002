@@ -3,6 +3,7 @@
 .container {
   min-height: 100vh;
   background: $color-bg-page;
+  padding-bottom: 120rpx;
 }
 
 .profileHeader {
@@ -81,6 +82,10 @@
   justify-content: space-between;
   box-shadow: 0 4rpx 16rpx rgba(0, 0, 0, 0.08);
   margin-bottom: $spacing-lg;
+
+  &:active {
+    opacity: 0.9;
+  }
 }
 
 .creditLeft {
@@ -257,4 +262,373 @@
   padding: 2rpx 12rpx;
   border-radius: $radius-round;
   margin-right: $spacing-sm;
+}
+
+.modalMask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+}
+
+.modal {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 100;
+}
+
+.modalContent {
+  background: $color-bg-page;
+  border-top-left-radius: 24rpx;
+  border-top-right-radius: 24rpx;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  padding-bottom: calc(env(safe-area-inset-bottom));
+}
+
+.modalHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-lg $page-padding;
+  border-bottom: 1rpx solid $color-divider;
+  flex-shrink: 0;
+}
+
+.modalTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.modalClose {
+  font-size: 56rpx;
+  color: $color-text-tertiary;
+  line-height: 1;
+  width: 60rpx;
+  height: 60rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modalBody {
+  padding: $spacing-lg $page-padding;
+  overflow-y: auto;
+  max-height: 70vh;
+}
+
+.creditDetail {
+  background: $color-primary-gradient;
+  border-radius: $radius-lg;
+  padding: $spacing-xl;
+  text-align: center;
+  margin-bottom: $spacing-lg;
+  color: $color-text-white;
+}
+
+.creditScoreBig {
+  font-size: 72rpx;
+  font-weight: $font-weight-bold;
+}
+
+.creditLevel {
+  font-size: $font-size-md;
+  opacity: 0.9;
+  margin-top: 8rpx;
+}
+
+.creditBarRow {
+  display: flex;
+  align-items: center;
+  margin-top: $spacing-lg;
+  gap: $spacing-md;
+}
+
+.creditBar {
+  flex: 1;
+  height: 12rpx;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 6rpx;
+  overflow: hidden;
+}
+
+.creditBarFill {
+  height: 100%;
+  background: $color-bg-card;
+  border-radius: 6rpx;
+}
+
+.creditPercent {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  min-width: 80rpx;
+  text-align: right;
+}
+
+.creditDesc {
+  margin-top: $spacing-sm;
+  font-size: $font-size-xs;
+  opacity: 0.85;
+}
+
+.creditItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.creditItemLabel {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+}
+
+.creditItemRight {
+  display: flex;
+  align-items: center;
+}
+
+.blacklistItem {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.blacklistAvatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  margin-right: $spacing-md;
+}
+
+.blacklistInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.blacklistName {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.blacklistReason {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.removeBtn {
+  @include button-reset;
+  height: 56rpx;
+  padding: 0 $spacing-lg;
+  background: rgba(255, 77, 79, 0.1);
+  color: $color-error;
+  font-size: $font-size-xs;
+  border-radius: $radius-button;
+}
+
+.reportType {
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  border: 2rpx solid transparent;
+  margin-bottom: $spacing-sm;
+  margin-right: $spacing-sm;
+}
+
+.reportTypeActive {
+  background: rgba(255, 126, 103, 0.1);
+  color: $color-primary;
+  border-color: $color-primary;
+}
+
+.reportTextarea {
+  width: 100%;
+  min-height: 200rpx;
+  background: $color-bg-card;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  margin-bottom: $spacing-lg;
+}
+
+.submitReportBtn {
+  @include button-reset;
+  width: 100%;
+  height: 88rpx;
+  background: $color-primary-gradient;
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-button;
+}
+
+.notifItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-lg 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.notifLabel {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.notifDesc {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.switch {
+  width: 100rpx;
+  height: 56rpx;
+  background: #E5E6EB;
+  border-radius: 28rpx;
+  position: relative;
+  transition: all $transition-base;
+  padding: 4rpx;
+
+  &.switchOn {
+    background: $color-primary;
+  }
+}
+
+.switchDot {
+  width: 48rpx;
+  height: 48rpx;
+  background: $color-bg-card;
+  border-radius: $radius-round;
+  transition: all $transition-base;
+  box-shadow: 0 2rpx 4rpx rgba(0, 0, 0, 0.2);
+}
+
+.switchOn .switchDot {
+  transform: translateX(44rpx);
+}
+
+.myPostItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.myPostTitle {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-weight: $font-weight-medium;
+}
+
+.myPostMeta {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.myPostStatus {
+  font-size: $font-size-xs;
+  color: $color-success;
+  background: rgba(82, 196, 26, 0.1);
+  padding: 4rpx 16rpx;
+  border-radius: $radius-button;
+}
+
+.msgItem {
+  display: flex;
+  align-items: flex-start;
+  padding: $spacing-md 0;
+  border-bottom: 1rpx solid $color-divider;
+  position: relative;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.msgUnread {
+  background: rgba(255, 126, 103, 0.03);
+}
+
+.msgIcon {
+  width: 64rpx;
+  height: 64rpx;
+  border-radius: $radius-round;
+  background: $color-bg-card;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: $spacing-md;
+  font-size: 28rpx;
+}
+
+.msgContent {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+}
+
+.msgTime {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.msgDot {
+  width: 16rpx;
+  height: 16rpx;
+  background: $color-error;
+  border-radius: $radius-round;
+  margin-left: $spacing-sm;
+  margin-top: 12rpx;
+}
+
+.settingItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-lg 0;
+  border-bottom: 1rpx solid $color-divider;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+
+  &:last-child {
+    border-bottom: none;
+  }
+
+  &:active {
+    background: $color-bg-hover;
+  }
 }

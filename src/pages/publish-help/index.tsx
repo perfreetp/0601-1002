@@ -4,6 +4,8 @@ import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import { getHelpTypeLabel } from '@/utils';
+import { useAppStore } from '@/store';
+import type { HelpPost } from '@/types';
 
 const types = [
   { key: 'foster', icon: '🏠', label: '临时寄养' },
@@ -18,6 +20,21 @@ const PublishHelpPage: React.FC = () => {
   const [description, setDescription] = useState('');
   const [location, setLocation] = useState('');
   const [contact, setContact] = useState('');
+  const [images, setImages] = useState<string[]>([]);
+  const addHelpPost = useAppStore(state => state.addHelpPost);
+
+  const handleChooseImage = () => {
+    if (images.length >= 3) {
+      Taro.showToast({ title: '最多上传3张', icon: 'none' });
+      return;
+    }
+    const mockImages = [
+      'https://picsum.photos/id/169/600/400',
+      'https://picsum.photos/id/237/600/400',
+      'https://picsum.photos/id/659/600/400'
+    ];
+    setImages([...images, mockImages[images.length % 3]]);
+  };
 
   const handleSubmit = () => {
     if (!title.trim()) {
@@ -28,6 +45,33 @@ const PublishHelpPage: React.FC = () => {
       Taro.showToast({ title: '请输入描述', icon: 'none' });
       return;
     }
+    if (!location.trim()) {
+      Taro.showToast({ title: '请输入所在位置', icon: 'none' });
+      return;
+    }
+    if (!contact.trim()) {
+      Taro.showToast({ title: '请输入联系方式', icon: 'none' });
+      return;
+    }
+
+    const newPost: HelpPost = {
+      id: `help_${Date.now()}`,
+      userId: 'u_me',
+      userName: '柴犬爸爸',
+      userAvatar: 'https://picsum.photos/id/177/200/200',
+      type: type as any,
+      title: title.trim(),
+      description: description.trim(),
+      images: images,
+      location: location.trim(),
+      contact: contact.trim(),
+      status: 'open',
+      createdAt: new Date().toISOString()
+    };
+
+    console.log('[PublishHelp] 发布新帖子:', newPost);
+    addHelpPost(newPost);
+
     Taro.showModal({
       title: '发布成功',
       content: `已发布${getHelpTypeLabel(type)}信息成功！`,
@@ -82,9 +126,28 @@ const PublishHelpPage: React.FC = () => {
           </View>
 
           <View className={styles.inputRow}>
-            <Text className={styles.label}>上传图片（选填）</Text>
+            <Text className={styles.label}>上传图片（选填，最多3张）</Text>
             <View className={styles.imageUpload}>
-              <View className={classnames(styles.uploadItem, styles.addImage)}>+</View>
+              {images.map((img, idx) => (
+                <View key={idx} className={styles.uploadItem}>
+                  <Image
+                    src={img}
+                    className={styles.uploadImg}
+                    mode="aspectFill"
+                    onClick={() => {
+                      const newImages = [...images];
+                      newImages.splice(idx, 1);
+                      setImages(newImages);
+                    }}
+                  />
+                  <View className={styles.removeImg}>×</View>
+                </View>
+              ))}
+              {images.length < 3 && (
+                <View className={classnames(styles.uploadItem, styles.addImage)} onClick={handleChooseImage}>
+                  +
+                </View>
+              )}
             </View>
           </View>
 

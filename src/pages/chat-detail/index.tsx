@@ -1,46 +1,94 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { View, Text, Image, Input, Button, ScrollView } from '@tarojs/components';
 import Taro, { useRouter, useDidShow } from '@tarojs/taro';
 import styles from './index.module.scss';
-import { mockChatMessages } from '@/data/chats';
+import { useAppStore } from '@/store';
 import classnames from 'classnames';
+import type { ChatMessage } from '@/types';
 
 const ChatDetailPage: React.FC = () => {
   const router = useRouter();
+  const chatId = router.params.id || 'c1';
   const chatName = router.params.name || '聊天';
+  const scrollRef = useRef<any>(null);
 
-  const [messages, setMessages] = useState(mockChatMessages);
+  const messages = useAppStore(state => state.chatMessages[chatId] || []);
+  const addChatMessage = useAppStore(state => state.addChatMessage);
+
   const [inputText, setInputText] = useState('');
 
   useDidShow(() => {
     Taro.setNavigationBarTitle({ title: chatName });
   });
 
+  useEffect(() => {
+    if (scrollRef.current) {
+      setTimeout(() => {
+        scrollRef.current.scrollToOffset({ offset: 99999, duration: 200 });
+      }, 100);
+    }
+  }, [messages]);
+
   const handleSend = () => {
     if (!inputText.trim()) return;
-    const newMsg = {
+    const newMsg: ChatMessage = {
       id: `m${Date.now()}`,
       senderId: 'me',
       senderName: '我',
-      senderAvatar: '',
+      senderAvatar: 'https://picsum.photos/id/177/200/200',
       content: inputText,
-      type: 'text' as const,
+      type: 'text',
       createdAt: new Date().toISOString(),
       isMine: true
     };
-    setMessages([...messages, newMsg]);
+    addChatMessage(chatId, newMsg);
     setInputText('');
   };
 
   const handleImage = () => {
-    Taro.showToast({ title: '选择图片', icon: 'none' });
+    const mockImages = [
+      'https://picsum.photos/id/237/500/400',
+      'https://picsum.photos/id/169/500/400',
+      'https://picsum.photos/id/659/500/400',
+      'https://picsum.photos/id/1062/500/400'
+    ];
+    const randomImg = mockImages[Math.floor(Math.random() * mockImages.length)];
+    const newMsg: ChatMessage = {
+      id: `m${Date.now()}`,
+      senderId: 'me',
+      senderName: '我',
+      senderAvatar: 'https://picsum.photos/id/177/200/200',
+      content: randomImg,
+      type: 'image',
+      createdAt: new Date().toISOString(),
+      isMine: true
+    };
+    addChatMessage(chatId, newMsg);
   };
 
   const handleLocation = () => {
-    Taro.showToast({ title: '发送位置', icon: 'none' });
+    const mockLocations = [
+      { address: '朝阳区望京SOHO T1', lat: 39.99, lng: 116.47 },
+      { address: '海淀区中关村大街1号', lat: 39.98, lng: 116.31 },
+      { address: '西湖区文三路 259 号昌地火炬大厦', lat: 30.28, lng: 120.12 },
+      { address: '浦东新区世纪大道 100 号', lat: 31.23, lng: 121.50 }
+    ];
+    const randomLoc = mockLocations[Math.floor(Math.random() * mockLocations.length)];
+    const newMsg: ChatMessage = {
+      id: `m${Date.now()}`,
+      senderId: 'me',
+      senderName: '我',
+      senderAvatar: 'https://picsum.photos/id/177/200/200',
+      content: '[位置] ' + randomLoc.address,
+      type: 'location',
+      createdAt: new Date().toISOString(),
+      isMine: true,
+      locationData: randomLoc
+    };
+    addChatMessage(chatId, newMsg);
   };
 
-  const renderMessage = (msg) => {
+  const renderMessage = (msg: ChatMessage) => {
     if (msg.type === 'image') {
       return (
         <View className={styles.msgImage}>
@@ -50,7 +98,10 @@ const ChatDetailPage: React.FC = () => {
     }
     if (msg.type === 'location' && msg.locationData) {
       return (
-        <View className={styles.msgLocation}>
+        <View className={classnames(
+          styles.msgLocation,
+          msg.isMine ? styles.msgLocationMine : styles.msgLocationOther
+        )}>
           <View className={styles.locationTitle}>📍 位置分享</View>
           <View className={styles.locationAddr}>{msg.locationData.address}</View>
         </View>
@@ -68,7 +119,12 @@ const ChatDetailPage: React.FC = () => {
 
   return (
     <View className={styles.container}>
-      <ScrollView className={styles.messageList} scrollY>
+      <ScrollView
+        className={styles.messageList}
+        scrollY
+        ref={scrollRef}
+        scrollWithAnimation
+      >
         {messages.map(msg => (
           <View
             key={msg.id}
