@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { View, Text, Button, ScrollView } from '@tarojs/components';
+import Taro, { useRouter, useDidShow } from '@tarojs/taro';
 import styles from './index.module.scss';
 import KnowledgeCard from '@/components/KnowledgeCard';
 import { useAppStore } from '@/store';
@@ -18,17 +19,32 @@ const tabs = [
 ];
 
 const KnowledgePage: React.FC = () => {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState('all');
   const [activeTab, setActiveTab] = useState('recommend');
   const knowledgeNotes = useAppStore(state => state.knowledgeNotes);
 
-  let list = activeCategory === 'all'
-    ? knowledgeNotes
-    : knowledgeNotes.filter(k => k.category === activeCategory);
+  useDidShow(() => {
+    const tabParam = router.params.tab;
+    if (tabParam === 'collected') {
+      setActiveTab('collected');
+      Taro.setNavigationBarTitle({ title: '我的收藏' });
+    } else {
+      Taro.setNavigationBarTitle({ title: '养宠知识' });
+    }
+  });
 
-  if (activeTab === 'collected') {
-    list = list.filter(k => k.isCollected);
-  }
+  const list = useMemo(() => {
+    let filtered = activeCategory === 'all'
+      ? knowledgeNotes
+      : knowledgeNotes.filter(k => k.category === activeCategory);
+
+    if (activeTab === 'collected') {
+      filtered = filtered.filter(k => k.isCollected);
+    }
+
+    return filtered;
+  }, [knowledgeNotes, activeCategory, activeTab]);
 
   return (
     <ScrollView className={styles.container} scrollY>

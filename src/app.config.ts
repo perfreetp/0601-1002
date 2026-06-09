@@ -9,7 +9,8 @@ export default defineAppConfig({
     'pages/knowledge/index',
     'pages/publish-help/index',
     'pages/feed-detail/index',
-    'pages/chat-detail/index'
+    'pages/chat-detail/index',
+    'pages/help-detail/index'
   ],
   window: {
     backgroundTextStyle: 'light',

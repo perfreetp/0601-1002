@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, Button, ScrollView } from '@tarojs/components';
 import styles from './index.module.scss';
 import ChatItem from '@/components/ChatItem';
-import { mockChatSessions } from '@/data/chats';
+import { useAppStore } from '@/store';
 
 const quickEntries = [
   { icon: '👥', text: '发起群聊' },
@@ -12,6 +12,8 @@ const quickEntries = [
 ];
 
 const ChatPage: React.FC = () => {
+  const chatSessions = useAppStore(state => state.chatSessions);
+
   return (
     <ScrollView className={styles.container} scrollY>
       <View className={styles.header}>
@@ -29,13 +31,13 @@ const ChatPage: React.FC = () => {
       </View>
 
       <View className={styles.sessionList}>
-        {mockChatSessions.length === 0 ? (
+        {chatSessions.length === 0 ? (
           <View className={styles.emptyState}>
             <View className={styles.emptyIcon}>💌</View>
             <View className={styles.emptyText}>暂无消息</View>
           </View>
         ) : (
-          mockChatSessions.map(session => (
+          chatSessions.map(session => (
             <ChatItem key={session.id} session={session} />
           ))
         )}

@@ -11,7 +11,12 @@ interface HelpCardProps {
 }
 
 const HelpCard: React.FC<HelpCardProps> = ({ help }) => {
-  const handleContact = () => {
+  const handleClick = () => {
+    Taro.navigateTo({ url: `/pages/help-detail/index?id=${help.id}` });
+  };
+
+  const handleContact = (e) => {
+    e.stopPropagation();
     Taro.showModal({
       title: '联系方式',
       content: help.contact,
@@ -32,7 +37,7 @@ const HelpCard: React.FC<HelpCardProps> = ({ help }) => {
   };
 
   return (
-    <View className={styles.card}>
+    <View className={styles.card} onClick={handleClick}>
       <View className={styles.cardHeader}>
         <Image className={styles.avatar} src={help.userAvatar} mode="aspectFill" />
         <View className={styles.userInfo}>
@@ -71,6 +76,9 @@ const HelpCard: React.FC<HelpCardProps> = ({ help }) => {
           <Button className={styles.contactBtn} onClick={handleContact}>
             联系TA
           </Button>
+        )}
+        {help.status === 'closed' && (
+          <View className={styles.closedLabel}>已结束</View>
         )}
       </View>
     </View>

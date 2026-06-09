@@ -404,7 +404,7 @@ const MinePage: React.FC = () => {
             我的服务
           </View>
           <View className={styles.menuSection} style={{ margin: 0 }}>
-            <View className={styles.menuItem} onClick={() => Taro.navigateTo({ url: '/pages/knowledge/index' })}>
+            <View className={styles.menuItem} onClick={() => Taro.navigateTo({ url: '/pages/knowledge/index?tab=collected' })}>
               <View className={classnames(styles.menuIcon, styles.menuIconBlue)}>📚</View>
               <Text className={styles.menuText}>我的收藏</Text>
               <Text className={styles.menuArrow}>›</Text>

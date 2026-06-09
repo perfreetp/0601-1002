@@ -4,6 +4,7 @@ import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import type { Feed } from '@/types';
 import { formatTime } from '@/utils';
+import { useAppStore } from '@/store';
 import classnames from 'classnames';
 
 interface FeedCardProps {
@@ -13,6 +14,7 @@ interface FeedCardProps {
 const FeedCard: React.FC<FeedCardProps> = ({ feed }) => {
   const [isLiked, setIsLiked] = useState(feed.isLiked);
   const [likes, setLikes] = useState(feed.likes);
+  const commentCount = useAppStore(state => state.getFeedCommentCount(feed.id));
 
   const handleLike = () => {
     setIsLiked(!isLiked);
@@ -97,7 +99,7 @@ const FeedCard: React.FC<FeedCardProps> = ({ feed }) => {
         </View>
         <View className={styles.actionItem}>
           <Text>💬</Text>
-          <Text style={{ marginLeft: '8rpx' }}>{feed.comments}</Text>
+          <Text style={{ marginLeft: '8rpx' }}>{commentCount}</Text>
         </View>
       </View>
     </View>
