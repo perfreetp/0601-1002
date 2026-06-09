@@ -5,6 +5,7 @@ import styles from './index.module.scss';
 import { mockPets } from '@/data/pets';
 import { useAppStore } from '@/store';
 import classnames from 'classnames';
+import { formatTime } from '@/utils';
 
 type ModalType = 'credit' | 'blacklist' | 'report' | 'notifications' | 'myPosts' | 'myMessages' | 'settings' | null;
 
@@ -256,7 +257,14 @@ const MinePage: React.FC = () => {
                 </View>
               ) : (
                 myPosts.map(post => (
-                  <View key={post.id} className={styles.myPostItem}>
+                  <View
+                    key={post.id}
+                    className={styles.myPostItem}
+                    onClick={() => {
+                      closeModal();
+                      Taro.navigateTo({ url: `/pages/help-detail/index?id=${post.id}` });
+                    }}
+                  >
                     <View>
                       <View className={styles.myPostTitle}>{post.title}</View>
                       <View className={styles.myPostMeta}>
@@ -264,10 +272,17 @@ const MinePage: React.FC = () => {
                         {post.type === 'walk' && '🐕 遛宠搭子'}
                         {post.type === 'transfer' && '📦 用品转让'}
                         {post.type === 'lost' && '🔍 走失寻宠'}
-                        {' · '}{post.time}
+                        {' · '}{formatTime(post.createdAt)}
                       </View>
                     </View>
-                    <View className={styles.myPostStatus}>已发布</View>
+                    <View
+                      className={classnames(
+                        styles.myPostStatus,
+                        post.status === 'closed' && styles.myPostStatusClosed
+                      )}
+                    >
+                      {post.status === 'open' ? '进行中' : '已结束'}
+                    </View>
                   </View>
                 ))
               )}

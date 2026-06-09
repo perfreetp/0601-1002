@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import type { HelpPost, ChatMessage, KnowledgeNote, ChatSession } from '@/types';
 import { mockHelps } from '@/data/helps';
-import { mockChatMessages, mockChats } from '@/data/chats';
+import { mockChatMessages, mockChatSessions } from '@/data/chats';
 import { mockKnowledge } from '@/data/knowledge';
 import { mockFeeds } from '@/data/feeds';
 
@@ -53,7 +53,7 @@ export const useAppStore = create<AppState>((set, get) => ({
     c2: mockChatMessages.slice(0, 3),
     c3: mockChatMessages.slice(0, 4)
   },
-  chatSessions: mockChats,
+  chatSessions: mockChatSessions,
   knowledgeNotes: mockKnowledge,
   comments: initialComments,
   feedCommentCounts: initialCommentCounts,

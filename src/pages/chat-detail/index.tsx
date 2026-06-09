@@ -68,10 +68,10 @@ const ChatDetailPage: React.FC = () => {
 
   const handleLocation = () => {
     const mockLocations = [
-      { address: '朝阳区望京SOHO T1', lat: 39.99, lng: 116.47 },
-      { address: '海淀区中关村大街1号', lat: 39.98, lng: 116.31 },
-      { address: '西湖区文三路 259 号昌地火炬大厦', lat: 30.28, lng: 120.12 },
-      { address: '浦东新区世纪大道 100 号', lat: 31.23, lng: 121.50 }
+      { address: '朝阳区望京SOHO T1', latitude: 39.99, longitude: 116.47 },
+      { address: '海淀区中关村大街1号', latitude: 39.98, longitude: 116.31 },
+      { address: '西湖区文三路 259 号昌地火炬大厦', latitude: 30.28, longitude: 120.12 },
+      { address: '浦东新区世纪大道 100 号', latitude: 31.23, longitude: 121.50 }
     ];
     const randomLoc = mockLocations[Math.floor(Math.random() * mockLocations.length)];
     const newMsg: ChatMessage = {
@@ -96,14 +96,15 @@ const ChatDetailPage: React.FC = () => {
         </View>
       );
     }
-    if (msg.type === 'location' && msg.locationData) {
+    if (msg.type === 'location') {
+      const address = msg.locationData?.address || msg.content.replace(/^\[位置\]\s*/, '') || '位置信息';
       return (
         <View className={classnames(
           styles.msgLocation,
           msg.isMine ? styles.msgLocationMine : styles.msgLocationOther
         )}>
           <View className={styles.locationTitle}>📍 位置分享</View>
-          <View className={styles.locationAddr}>{msg.locationData.address}</View>
+          <View className={styles.locationAddr}>{address}</View>
         </View>
       );
     }

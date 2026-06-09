@@ -85,6 +85,7 @@ const HelpDetailPage: React.FC = () => {
         if (res.confirm) {
           updateHelpStatus(help.id, 'closed');
           Taro.showToast({ title: '已结束互助', icon: 'success' });
+          setTimeout(() => Taro.navigateBack(), 600);
         }
       }
     });
